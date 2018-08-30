@@ -20,13 +20,16 @@ class App extends React.Component{
         const data = await api_call.json();
         console.log(data);
         //async await -> form fillout -> props 32.17
+        //props are html abtributes
+        //we are going to use them to give a component
+        //access to our getweather method in App.Js
 
     }
         render(){
             return (
                 <div>
                     <Titles />
-                    <Form />
+                    <Form getWeather={this.getWeather}/>
                     <Weather/>
                 </div>
             );
