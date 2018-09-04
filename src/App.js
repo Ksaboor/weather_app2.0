@@ -6,6 +6,19 @@ import Weather from "./components/Weather";
 const API_KEY = "bdf10afbc134449891aae8da581cf20a";
 
 class App extends React.Component{
+    /*
+    is an object that lives inside of an component
+    It is responsible for keeping track of changing data within an component
+
+     */
+    state = {
+        temperature:undefined,
+        city:undefined,
+        country:undefined,
+        humidity:undefined,
+        description: undefined,
+        error:undefined
+    }
     //create get method using arrow function
     //to allow us to use "this" independently
     //of creating an constructor
@@ -25,9 +38,21 @@ class App extends React.Component{
         //template strings = noraml strings that allows us
         //to inject the variables that we have define in our files
         e.preventDefault();
-        const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=Montreal&mode=json&appid=${API_KEY}&units=metric`);
+        const city = e.target.elements.city.value;
+        const country = e.target.elements.country.value;
+        const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&mode=json&appid=${API_KEY}&units=imperial`);
         const data = await api_call.json();
         console.log(data);
+        //setting our state
+        this.setState({
+            temperature:data.main.temp,
+            city:data.name,
+            country:data.sys.country,
+            humidity:data.main.humidity,
+            description: data.weather[0].description,
+            error:''
+        })
+
         //async await -> form fillout -> props 32.17
         //props are html abtributes
         //we are going to use them to give a component
@@ -39,7 +64,14 @@ class App extends React.Component{
                 <div>
                     <Titles />
                     <Form getWeather={this.getWeather}/>
-                    <Weather/>
+                    <Weather
+                        temperature={this.state.temperature}
+                        city={this.state.city}
+                        country={this.state.country}
+                        humidity={this.state.humidity}
+                        description={this.state.description}
+                        error={this.state.error}
+                    />
                 </div>
             );
         }
