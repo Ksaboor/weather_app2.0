@@ -43,7 +43,7 @@ class App extends React.Component{
         const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&mode=json&appid=${API_KEY}&units=imperial`);
         const data = await api_call.json();
         //added if statements to avoid runtime error
-        //only when both city and country forms are fill
+        //only when both city and country are equal to true
         if(city && country) {
             console.log(data);
             //setting our state
@@ -54,6 +54,15 @@ class App extends React.Component{
                 humidity: data.main.humidity,
                 description: data.weather[0].description,
                 error: ''
+            })
+        } else {
+            this.setState({
+                temperature: undefined,
+                city: undefined,
+                country: undefined,
+                humidity: undefined,
+                description: undefined,
+                error: 'Please enter city and state'
             })
         }
         //async await -> form fillout -> props 32.17
