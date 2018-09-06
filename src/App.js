@@ -42,22 +42,25 @@ class App extends React.Component{
         const country = e.target.elements.country.value;
         const api_call = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&mode=json&appid=${API_KEY}&units=imperial`);
         const data = await api_call.json();
-        console.log(data);
-        //setting our state
-        this.setState({
-            temperature:data.main.temp,
-            city:data.name,
-            country:data.sys.country,
-            humidity:data.main.humidity,
-            description: data.weather[0].description,
-            error:''
-        })
-
+        //added if statements to avoid runtime error
+        //only when both city and country forms are fill
+        if(city && country) {
+            console.log(data);
+            //setting our state
+            this.setState({
+                temperature: data.main.temp,
+                city: data.name,
+                country: data.sys.country,
+                humidity: data.main.humidity,
+                description: data.weather[0].description,
+                error: ''
+            })
+        }
         //async await -> form fillout -> props 32.17
         //props are html abtributes
         //we are going to use them to give a component
         //access to our getweather method in App.Js
-        //37:54
+        //
     };
         render(){
             return (
